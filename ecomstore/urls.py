@@ -14,7 +14,11 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
-                       (r'^catalog/$', 'preview.views.home'),
+                       (r'^', include('ecomstore.catalog.urls')),
                        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
                         { 'document_root' : '/home/pkeni/git/ecomstore/ecomstore/static' }),
+                       (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+                        { 'document_root' : '/home/pkeni/git/ecomstore/ecomstore/media' }),
 )
+
+handler404 = 'ecomstore.views.file_not_found_404'

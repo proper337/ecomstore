@@ -51,6 +51,12 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
 
+    # image fields, added in Chapter 7
+    # image fields require a varchar(100) in db
+    image = models.ImageField(upload_to='images/products/main')
+    thumbnail = models.ImageField(upload_to='images/products/thumbnails')
+    image_caption = models.CharField(max_length=200)
+
     class Meta:
         db_table = 'products'
         ordering = ['-created_at']

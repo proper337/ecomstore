@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'ecomstore.catalog',
     'ecomstore.utils',
+    'ecomstore.cart',
 )
 
 # A sample logging configuration. The only tangible logging

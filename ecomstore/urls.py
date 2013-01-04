@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^', include('ecomstore.catalog.urls')),
+                       (r'^cart/', include('ecomstore.cart.urls')),
                        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
                         { 'document_root' : '/home/pkeni/git/ecomstore/ecomstore/static' }),
                        (r'^media/(?P<path>.*)$', 'django.views.static.serve',

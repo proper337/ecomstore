@@ -14,6 +14,9 @@ META_DESCRIPTION = 'Modern Musician is an online supplier of instruments, sheet 
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__).decode('utf-8'))
 
+# Upon deployment, change to True
+ENABLE_SSL = False
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -110,6 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'ecomstore.SSLMiddleware.SSLRedirect',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -141,7 +145,13 @@ INSTALLED_APPS = (
     'ecomstore.catalog',
     'ecomstore.utils',
     'ecomstore.cart',
+    'ecomstore.checkout',
 )
+
+# Google Checkout API credentials
+GOOGLE_CHECKOUT_MERCHANT_ID = '647437821693560'
+GOOGLE_CHECKOUT_MERCHANT_KEY = 'TUhccXe3ZW4gKPhmU4do7g'
+GOOGLE_CHECKOUT_URL = 'https://sandbox.google.com/checkout/api/checkout/v2/merchantCheckout/Merchant/' + GOOGLE_CHECKOUT_MERCHANT_ID
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

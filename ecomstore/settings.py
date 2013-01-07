@@ -143,15 +143,21 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'ecomstore.catalog',
+    'ecomstore.checkout',
     'ecomstore.utils',
     'ecomstore.cart',
-    'ecomstore.checkout',
 )
 
 # Google Checkout API credentials
 GOOGLE_CHECKOUT_MERCHANT_ID = '647437821693560'
 GOOGLE_CHECKOUT_MERCHANT_KEY = 'TUhccXe3ZW4gKPhmU4do7g'
 GOOGLE_CHECKOUT_URL = 'https://sandbox.google.com/checkout/api/checkout/v2/merchantCheckout/Merchant/' + GOOGLE_CHECKOUT_MERCHANT_ID
+
+# Authorize.Net API Credentials
+AUTHNET_POST_URL = 'test.authorize.net'
+AUTHNET_POST_PATH = '/gateway/transact.dll'
+AUTHNET_LOGIN = '4z3c2WB5tAj'
+AUTHNET_KEY = '99TN2W4T9Ys5JuzY'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

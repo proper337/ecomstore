@@ -103,3 +103,11 @@ def cart_subtotal(request):
 def cart_distinct_item_count(request):
     return get_cart_items(request).count()
 
+def is_empty(request):
+    return cart_distinct_item_count(request) == 0
+
+def empty_cart(request):
+    """ empties the shopping cart of the current customer """
+    user_cart = get_cart_items(request)
+    user_cart.delete()
+   

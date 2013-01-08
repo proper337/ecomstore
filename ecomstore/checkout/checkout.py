@@ -83,4 +83,10 @@ def create_order(request, transaction_id):
             oi.save()
         # all set, clear the cart
         cart.empty_cart(request)
+
+        # save profile info for future orders
+        if request.user.is_authenticated():
+            from ecomstore.accounts import profile
+            profile.set(request)
+        
     return order

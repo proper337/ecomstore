@@ -1,5 +1,10 @@
 from django.db import models
 
+class ActiveCategoryManager(models.Manager):
+    """ Manager class to return only those categories where each instance is active """
+    def get_query_set(self):
+        return super(ActiveCategoryManager, self).get_query_set().filter(is_active=True)
+
 class Category(models.Model):
     """
     """
@@ -12,6 +17,9 @@ class Category(models.Model):
     meta_description = models.CharField("Meta Description", max_length=255, help_text='Content for description meta tag')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+    active = ActiveCategoryManager()
 
     class Meta:
         db_table = 'categories'
@@ -26,6 +34,16 @@ class Category(models.Model):
         return('catalog_category', (), {'category_slug': self.slug})
 
         
+class ActiveProductManager(models.Manager):
+    """ Manager class to return only those products where each instance is active """
+    def get_query_set(self):
+        return super(ActiveProductManager, self).get_query_set().filter(is_active=True)
+    
+class FeaturedProductManager(models.Manager):
+    """ Manager class to return only those products where each instance is featured """
+    def get_query_set(self):
+        return super(FeaturedProductManager, self).get_query_set().filter(is_active=True).filter(is_featured=True)
+
 class Product(models.Model):
     """
     """
@@ -57,6 +75,10 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to='images/products/thumbnails')
     image_caption = models.CharField(max_length=200)
 
+    objects = models.Manager()
+    active = ActiveProductManager()
+    featured = FeaturedProductManager()
+    
     class Meta:
         db_table = 'products'
         ordering = ['-created_at']

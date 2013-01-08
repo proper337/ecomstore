@@ -8,13 +8,14 @@ from ecomstore.checkout.models import Order, OrderItem
 from ecomstore.checkout import checkout
 from ecomstore.cart import cart
 
+from ecomstore.accounts import profile
+
 def show_checkout(request, template_name='checkout/checkout.html'):
     """ checkout form page to collect user shipping and billing information """
     if cart.is_empty(request):
         cart_url = urlresolvers.reverse('show_cart')
         return HttpResponseRedirect(cart_url)
     
-    import pdb; pdb.set_trace();
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = CheckoutForm(postdata)
@@ -29,7 +30,11 @@ def show_checkout(request, template_name='checkout/checkout.html'):
         else:
             error_message = u'Correct the errors below'
     else:
-        form = CheckoutForm()
+        if request.user.is_authenticated():
+            user_profile = profile.retrieve(request)
+            form = CheckoutForm(instance=user_profile)
+        else:
+            form = CheckoutForm()
     page_title = 'Checkout'
     return render_to_response(template_name, locals(), context_instance=RequestContext(request))
 

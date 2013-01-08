@@ -42,6 +42,8 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+LOGIN_REDIRECT_URL = '/accounts/my_account/'
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -118,6 +120,8 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTH_PROFILE_MODULE = 'accounts.userprofile'
+
 ROOT_URLCONF = 'ecomstore.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -146,6 +150,7 @@ INSTALLED_APPS = (
     'ecomstore.checkout',
     'ecomstore.utils',
     'ecomstore.cart',
+    'ecomstore.accounts',
 )
 
 # Google Checkout API credentials

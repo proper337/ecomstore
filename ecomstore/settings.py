@@ -42,6 +42,8 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+PRODUCTS_PER_PAGE = 12
+
 LOGIN_REDIRECT_URL = '/accounts/my_account/'
 
 # If you set this to False, Django will make some optimizations so as not
@@ -151,6 +153,7 @@ INSTALLED_APPS = (
     'ecomstore.utils',
     'ecomstore.cart',
     'ecomstore.accounts',
+    'ecomstore.search',
 )
 
 # Google Checkout API credentials

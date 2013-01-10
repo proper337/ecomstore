@@ -43,6 +43,7 @@ LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 
 PRODUCTS_PER_PAGE = 12
+PRODUCTS_PER_ROW = 4
 
 LOGIN_REDIRECT_URL = '/accounts/my_account/'
 
@@ -154,6 +155,8 @@ INSTALLED_APPS = (
     'ecomstore.cart',
     'ecomstore.accounts',
     'ecomstore.search',
+    'ecomstore.stats',
+    'tagging'
 )
 
 # Google Checkout API credentials

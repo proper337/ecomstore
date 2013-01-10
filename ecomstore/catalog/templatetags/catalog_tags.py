@@ -25,3 +25,8 @@ def footer_links():
     flatpage_list = FlatPage.objects.all()
     return {'flatpage_list': flatpage_list }
 
+@register.inclusion_tag("tags/product_list.html", takes_context=True)
+def product_list(context, products, header_text):
+    return {'MEDIA_URL': context['MEDIA_URL'],
+            'products': products,
+            'header_text': header_text }

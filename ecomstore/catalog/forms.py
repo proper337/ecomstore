@@ -1,5 +1,5 @@
 from django import forms
-from ecomstore.catalog.models import Product, Category
+from ecomstore.catalog.models import Product, Category, ProductReview
 
 class ProductAdminForm(forms.ModelForm):
     """ ModelForm class to validate product instance data before saving from admin interface """
@@ -28,3 +28,11 @@ class ProductAddToCartForm(forms.Form):
             if not self.request.session.test_cookie_worked():
                 raise forms.ValidationError("Cookies must be enabled.")
         return self.cleaned_data
+
+
+class ProductReviewForm(forms.ModelForm):
+    """ Form class to submit a new ProductReview instance """
+    class Meta:
+        model = ProductReview
+        exclude = ('user','product', 'is_approved')
+        

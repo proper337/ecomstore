@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+import tagging
 
 class ActiveCategoryManager(models.Manager):
     """ Manager class to return only those categories where each instance is active """
@@ -95,4 +97,68 @@ class Product(models.Model):
             return self.price
         else:
             return None
+    
+    def cross_sells(self):
+        """ gets other Product instances that have been combined with the current instance in past orders. Includes the orders
+        that have been placed by anonymous users that haven't registered
+        """
+        from ecomstore.checkout.models import Order, OrderItem
+        orders = Order.objects.filter(orderitem__product=self)
+        order_items = OrderItem.objects.filter(order__in=orders).exclude(product=self)
+        products = Product.active.filter(orderitem__in=order_items).distinct()
+        return products
+    
+    # users who purchased this product also bought....
+    def cross_sells_user(self):
+        """ gets other Product instances that have been ordered by other registered customers who also ordered the current
+        instance. Uses all past orders of each registered customer and not just the order in which the current 
+        instance was purchased
+        
+        """
+        from ecomstore.checkout.models import Order, OrderItem
+        from django.contrib.auth.models import User
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter(order__user__in=users).exclude(product=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products
+    
+    def cross_sells_hybrid(self):
+        """ gets other Product instances that have been both been combined with the current instance in orders placed by 
+        unregistered customers, and all products that have ever been ordered by registered customers
+        
+        """
+        from ecomstore.checkout.models import Order, OrderItem
+        from django.db.models import Q
+        orders = Order.objects.filter(orderitem__product=self)
+        users = User.objects.filter(order__orderitem__product=self)
+        items = OrderItem.objects.filter( Q(order__in=orders) | 
+                      Q(order__user__in=users) 
+                      ).exclude(product=self)
+        products = Product.active.filter(orderitem__in=items).distinct()
+        return products
+    
+try:
+    tagging.register(Product)
+except tagging.AlreadyRegistered:
+    pass
+    
+class ActiveProductReviewManager(models.Manager):
+    """ Manager class to return only those product reviews where each instance is approved """
+    def all(self):
+        return super(ActiveProductReviewManager, self).all().filter(is_approved=True)
+        
+class ProductReview(models.Model):
+    """ model class containing product review data associated with a product instance """
+    RATINGS = ((5,5),(4,4),(3,3),(2,2),(1,1),)
+    
+    product = models.ForeignKey(Product)
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5, choices=RATINGS)
+    is_approved = models.BooleanField(default=True)
+    content = models.TextField()
+    
+    objects = models.Manager()
+    approved = ActiveProductReviewManager()
     
